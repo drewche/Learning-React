@@ -69,23 +69,27 @@ class Contact extends Component {
             errors.lastname = 'Last Name should be <= 10 characters';
 
         const reg = /^[0-9]+$/;
-        if (this.state.touched.telnum && !reg.test(telnum))
-            errors.telnum = 'Tel. Number should contain only numbers';
+        if (this.state.touched.telnum)
+            if (telnum === '')
+                errors.telnum = 'Tel. Number can\'t be blank'
+            else
+                if (!reg.test(telnum))
+                    errors.telnum = 'Tel. Number should contain only numbers';
 
-        if(this.state.touched.email && email === undefined)
-            errors.email = 'Email can\'t be blank';
+        if(this.state.touched.email) {
+            if (email === '')
+                errors.email = 'Email can\'t be blank';
+            else {
+                if (email.split('').filter(x => x === '@').length !== 1)
+                    errors.email = 'Email should contain a @';
+            }
+        }
 
         return errors;
     }
 
-
-    // valid={errors.email === ''}
-    // invalid={errors.email !== ''}
-
-    // <FormFeedback>{errors.email}</FormFeedback>
-
     render() {
-        const errors = this.validate(this.state.firstname, this.state.telnum, this.state.email);
+        const errors = this.validate(this.state.firstname, this.state.lastname, this.state.telnum, this.state.email);
         return(
             <div className="container">
                 <div className="row">
@@ -136,10 +140,11 @@ class Contact extends Component {
                                     <Input type="text" id="firstname" name="firstname"
                                         placeholder="First Name"
                                         value={this.state.firstname}
-
+                                        valid={errors.firstname === ''}
+                                        invalid={errors.firstname !== ''}
                                         onBlur={this.handleBlur('firstname')}
                                         onChange={this.handleInputChange} />
-
+                                        <FormFeedback>{errors.firstname}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -148,10 +153,11 @@ class Contact extends Component {
                                     <Input type="text" id="lastname" name="lastname"
                                         placeholder="Last Name"
                                         value={this.state.lastname}
-
+                                        valid={errors.lastname === ''}
+                                        invalid={errors.lastname !== ''}
                                         onBlur={this.handleBlur('lastname')}
                                         onChange={this.handleInputChange} />
-
+                                        <FormFeedback>{errors.lastname}</FormFeedback>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
