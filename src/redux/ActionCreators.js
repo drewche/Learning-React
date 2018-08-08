@@ -44,11 +44,6 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
             alert('Your comment could not be posted\nError: ' + error.message); });
 }
 
-export const addFeedback = (feedback) => ({
-    type: ActionTypes.ADD_FEEDBACK,
-    payload: feedback
-});
-
 export const postFeedback = (firstname, lastname, telnum, email, agree, contactType, message) => (dispatch) => {
     const newFeedback = {
         firstname: firstname,
